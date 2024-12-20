@@ -49,4 +49,5 @@ TEST_BINS = $(TEST_SRCS:$(TEST_DIR)/%.c=$(BIN_DIR)/%)
 tests: $(TEST_BINS)
 
 $(BIN_DIR)/%: $(TEST_DIR)/%.c $(LIBFT)
+	@mkdir -p $(BIN_DIR)
 	$(CC) $(CFLAGS) $< -o $@_tester -L$(LIBFT_DIR) -lft
