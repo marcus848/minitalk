@@ -17,7 +17,7 @@ int	g_wait_response = 0;
 void	handle_response(int signal)
 {
 	if (signal == SIGUSR2)
-		ft_printf(GREEN_B "Message received\n" RESET);
+		ft_printf(BLUE_I "⭐⭐⭐ %sMessage received%s ⭐⭐⭐\n", BLUE_B, RESET);
 	g_wait_response = 1;
 }
 
@@ -60,5 +60,11 @@ int	main(int ac, char **av)
 	{
 		pid = ft_atoi(av[1]);
 		send_bits(pid, av[2]);
+	}
+	else
+	{
+		ft_printf(RED_B "Sintax error:\n" RESET);
+		ft_printf("Only accept this: ");
+		ft_printf(YELLOW_U "./client <pid> <message>\n" RESET);
 	}
 }

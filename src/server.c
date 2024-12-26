@@ -59,11 +59,13 @@ int	main(void)
 {
 	struct sigaction	sa;
 
-	ft_printf(GREEN_B "Hello, let's start. My pid is: %d\n" RESET, getpid());
+	ft_printf(GREEN_B "Hello, let's start. My pid is: " RESET);
+	ft_printf(GREEN_U "%d\n" RESET, getpid());
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = print_signal;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	while (1)
 		pause();
+	return (0);
 }

@@ -22,10 +22,17 @@ all: $(NAME)
 
 ${NAME}: server client
 
-server: $(OBJ_DIR)/server.o $(LIBFT)
+server: $(BIN_DIR)/server
+
+client: $(BIN_DIR)/client
+
+$(BIN_DIR):
+	@mkdir -p $(BIN_DIR)
+
+$(BIN_DIR)/server: $(OBJ_DIR)/server.o $(LIBFT) | $(BIN_DIR)
 	$(CC) $(CFLAGS) $(OBJ_DIR)/server.o -o $(BIN_DIR)/server -L$(LIBFT_DIR) -lft
 
-client: $(OBJ_DIR)/client.o $(LIBFT)
+$(BIN_DIR)/client: $(OBJ_DIR)/client.o $(LIBFT) | $(BIN_DIR)
 	$(CC) $(CFLAGS) $(OBJ_DIR)/client.o -o $(BIN_DIR)/client -L$(LIBFT_DIR) -lft
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
@@ -41,8 +48,9 @@ clean:
 	@echo "Object files removed."
 
 fclean: clean
-	@rm -f $(NAME) $(LIBFT)
-	@echo "fcleaned"
+	@rm -rf $(BIN_DIR)/* $(LIBFT)
+	@rm -rf $(BIN_DIR)
+	@echo "all cleaned"
 
 re: fclean all
 
