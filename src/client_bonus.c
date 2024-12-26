@@ -16,7 +16,8 @@ int	g_wait_response = 0;
 
 void	handle_response(int signal)
 {
-	(void)signal;
+	if (signal == SIGUSR2)
+		ft_printf(BLUE_I "⭐⭐⭐ %sMessage received%s ⭐⭐⭐\n", BLUE_B, RESET);
 	g_wait_response = 1;
 }
 

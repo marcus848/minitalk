@@ -1,5 +1,6 @@
 # File name
 NAME = minitalk
+NAME_BONUS = minitalk_bonus
 
 # Compiler and flags
 CC = cc
@@ -20,11 +21,19 @@ LIBFT = $(LIBFT_DIR)/libft.a
 # targets
 all: $(NAME)
 
+bonus: $(NAME_BONUS)
+
 ${NAME}: server client
+
+${NAME_BONUS}: serverb clientb
 
 server: $(BIN_DIR)/server
 
 client: $(BIN_DIR)/client
+
+serverb: $(BIN_DIR)/server_bonus
+
+clientb: $(BIN_DIR)/client_bonus
 
 $(BIN_DIR):
 	@mkdir -p $(BIN_DIR)
@@ -35,12 +44,18 @@ $(BIN_DIR)/server: $(OBJ_DIR)/server.o $(LIBFT) | $(BIN_DIR)
 $(BIN_DIR)/client: $(OBJ_DIR)/client.o $(LIBFT) | $(BIN_DIR)
 	$(CC) $(CFLAGS) $(OBJ_DIR)/client.o -o $(BIN_DIR)/client -L$(LIBFT_DIR) -lft
 
+$(BIN_DIR)/server_bonus: $(OBJ_DIR)/server_bonus.o $(LIBFT) | $(BIN_DIR)
+	$(CC) $(CFLAGS) $(OBJ_DIR)/server_bonus.o -o $(BIN_DIR)/server_bonus -L$(LIBFT_DIR) -lft
+
+$(BIN_DIR)/client_bonus: $(OBJ_DIR)/client_bonus.o $(LIBFT) | $(BIN_DIR)
+	$(CC) $(CFLAGS) $(OBJ_DIR)/client_bonus.o -o $(BIN_DIR)/client_bonus -L$(LIBFT_DIR) -lft
+
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
+	$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
 
 clean:

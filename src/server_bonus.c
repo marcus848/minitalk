@@ -61,7 +61,6 @@ int	main(void)
 
 	ft_printf(GREEN_B "Hello, let's start. My pid is: " RESET);
 	ft_printf(GREEN_U "%d\n" RESET, getpid());
-	ft_memset(&sa, 0, sizeof(sa));
 	sa.sa_flags = SA_SIGINFO;
 	sa.sa_sigaction = print_signal;
 	sigaction(SIGUSR1, &sa, NULL);
