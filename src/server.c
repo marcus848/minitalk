@@ -5,52 +5,52 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/23 00:36:41 by marcudos          #+#    #+#             */
-/*   Updated: 2024/12/26 16:52:51 by marcudos         ###   ########.fr       */
+/*   Created: 2024/12/26 15:08:46 by marcudos          #+#    #+#             */
+/*   Updated: 2024/12/26 17:46:11 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/include/libft.h"
+#include "../include/minitalk.h"
 
-void	message_completed(char **str, int *bit_c, unsigned char *c)
+int	char_completed(char **str, char *c, int *bit_c, siginfo_t *info)
 {
-	ft_printf("%s\n", *str);
+	char	*temp;
+
+	if (*c == 0)
+	{
+		ft_printf("%s\n", *str);
+		free(*str);
+		*c = 0;
+		*bit_c = 0;
+		*str = NULL;
+		kill(info->si_pid, SIGUSR2);
+		return (0);
+	}
+	temp = ft_strjoin(*str, c);
 	free(*str);
-	*str = NULL;
-	*bit_c = 0;
+	*str = temp;
 	*c = 0;
+	*bit_c = 0;
+	return (1);
 }
 
 void	print_signal(int signal, siginfo_t *info, void *context)
 {
-	static unsigned char	c = 0;
-	static char				*str = NULL;
-	char					*temp;
-	static int				bit_count = 0;
+	static char		c = 0;
+	static char		*str = NULL;
+	static int		bit_count = 0;
 
-	(void)context;
+	context = NULL;
 	c <<= 1;
 	if (signal == SIGUSR2)
 		c |= 1;
-	bit_count++;
 	if (!str)
 		str = ft_strdup("");
+	bit_count++;
 	if (bit_count == 8)
 	{
-		if (c == 0)
-		{
-			message_completed(&str, &bit_count, &c);
-			kill(info->si_pid, SIGUSR2);
+		if (!char_completed(&str, &c, &bit_count, info))
 			return ;
-		}
-		else
-		{
-			temp = str;
-			str = ft_strjoin(str, (char []){c, '\0'});
-			free(temp);
-		}
-		bit_count = 0;
-		c = 0;
 	}
 	kill(info->si_pid, SIGUSR1);
 }
@@ -58,16 +58,12 @@ void	print_signal(int signal, siginfo_t *info, void *context)
 int	main(void)
 {
 	struct sigaction	sa;
-	int					pid;
 
-	// sigemptyset(&sa.sa_mask);
-	sa.sa_sigaction = print_signal;
+	ft_printf(GREEN_B "Hello, let's start. My pid is: %d\n" RESET, getpid());
 	sa.sa_flags = SA_SIGINFO;
+	sa.sa_sigaction = print_signal;
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
-	pid = getpid();
-	ft_printf("Hello started a test. my pid is: %d\n", pid);
 	while (1)
 		pause();
-	return (0);
 }

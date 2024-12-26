@@ -1,5 +1,5 @@
 # File name
-NAME = project_name
+NAME = minitalk
 
 # Compiler and flags
 CC = cc
@@ -13,22 +13,28 @@ BIN_DIR = bin
 TEST_DIR = tests
 
 # Source and object files
-SRCS = $(wildcard $(SRC_DIR)/*.c)
+SRCS = $(SRC_DIR)/client.c $(SRC_DIR)/server.c
 OBJS = $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 LIBFT = $(LIBFT_DIR)/libft.a
 
 # targets
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) -L$(LIBFT_DIR) -lft
+${NAME}: server client
+
+server: $(OBJ_DIR)/server.o $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJ_DIR)/server.o -o $(BIN_DIR)/server -L$(LIBFT_DIR) -lft
+
+client: $(OBJ_DIR)/client.o $(LIBFT)
+	$(CC) $(CFLAGS) $(OBJ_DIR)/client.o -o $(BIN_DIR)/client -L$(LIBFT_DIR) -lft
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	@mkdir -p $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	@rm -rf $(OBJ_DIR) $(LIBFT_DIR)/obj

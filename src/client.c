@@ -5,23 +5,23 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/22 23:11:21 by marcudos          #+#    #+#             */
-/*   Updated: 2024/12/26 17:14:30 by marcudos         ###   ########.fr       */
+/*   Created: 2024/12/26 15:47:16 by marcudos          #+#    #+#             */
+/*   Updated: 2024/12/26 17:46:06 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/include/libft.h"
+#include "../include/minitalk.h"
 
-static int	g_wait_server = 0;
+int	g_wait_response = 0;
 
-void	update_wait_server(int signal)
+void	handle_response(int signal)
 {
 	if (signal == SIGUSR2)
-		ft_printf("%sSuccess:%s Message received\n", GREEN, RESET);
-	g_wait_server = 1;
+		ft_printf(GREEN_B "Message received\n" RESET);
+	g_wait_response = 1;
 }
 
-void	send_bit(int pid, char *str)
+void	send_bits(int pid, char *str)
 {
 	static int	bit;
 
@@ -30,22 +30,22 @@ void	send_bit(int pid, char *str)
 		bit = 8;
 		while (bit--)
 		{
+			g_wait_response = 0;
 			if ((*str >> bit) & 1)
 				kill(pid, SIGUSR2);
 			else
 				kill(pid, SIGUSR1);
-			while (!g_wait_server)
+			while (!g_wait_response)
 				;
-			g_wait_server = 0;
 		}
 		str++;
 	}
 	bit = 8;
 	while (bit--)
 	{
-		g_wait_server = 1;
+		g_wait_response = 0;
 		kill(pid, SIGUSR1);
-		while (!g_wait_server)
+		while (!g_wait_response)
 			;
 	}
 }
@@ -54,18 +54,11 @@ int	main(int ac, char **av)
 {
 	int	pid;
 
-	pid = 0;
-	signal(SIGUSR1, update_wait_server);
-	signal(SIGUSR2, update_wait_server);
+	signal(SIGUSR1, handle_response);
+	signal(SIGUSR2, handle_response);
 	if (ac == 3)
 	{
 		pid = ft_atoi(av[1]);
-		send_bit(pid, av[2]);
+		send_bits(pid, av[2]);
 	}
-	else
-	{
-		ft_printf(RED "Sintax error\n" RESET);
-		ft_printf("Only accept this: ./client <PID> <MESSAGE>\n");
-	}
-	return (0);
 }
