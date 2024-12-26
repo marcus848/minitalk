@@ -47,13 +47,3 @@ fclean: clean
 re: fclean all
 
 .PHONY: all clean fclean re
-
-#Tests
-TEST_SRCS = $(wildcard $(TEST_DIR)/*.c)
-TEST_BINS = $(TEST_SRCS:$(TEST_DIR)/%.c=$(BIN_DIR)/%)
-
-tests: $(TEST_BINS)
-
-$(BIN_DIR)/%: $(TEST_DIR)/%.c $(LIBFT)
-	@mkdir -p $(BIN_DIR)
-	$(CC) $(CFLAGS) $< -o $@_tester -L$(LIBFT_DIR) -lft

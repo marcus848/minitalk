@@ -6,7 +6,7 @@
 /*   By: marcudos <marcudos@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 17:06:22 by marcudos          #+#    #+#             */
-/*   Updated: 2024/12/26 16:45:02 by marcudos         ###   ########.fr       */
+/*   Updated: 2024/12/26 18:00:59 by marcudos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 # define CYAN "\033[0;36m"
 # define WHITE "\033[0;37m"
 
-// COLORS
+// COLORS BLACK
 # define BLACK_B "\033[1;30m"
 # define RED_B "\033[1;31m"
 # define GREEN_B "\033[1;32m"
@@ -44,7 +44,7 @@
 # define CYAN_B "\033[1;36m"
 # define WHITE_B "\033[1;37m"
 
-// COLORS
+// COLORS ITALIC
 # define BLACK_I "\033[3;30m"
 # define RED_I "\033[3;31m"
 # define GREEN_I "\033[3;32m"
@@ -54,7 +54,7 @@
 # define CYAN_I "\033[3;36m"
 # define WHITE_I "\033[3;37m"
 
-// COLORS
+// COLORS UNDERLINE
 # define BLACK_U "\033[4;30m"
 # define RED_U "\033[4;31m"
 # define GREEN_U "\033[4;32m"
@@ -63,7 +63,6 @@
 # define MAGENTA_U "\033[4;35m"
 # define CYAN_U "\033[4;36m"
 # define WHITE_U "\033[4;37m"
-
 
 // Cores de fundo
 # define BG_BLACK "\033[1;40m"
